@@ -1,0 +1,13 @@
+db:
+  image: mysql:8
+  container_name: quiz_mysql_db
+  volumes:
+    - db_data:/var/quiz/mysql
+  restart: always
+  environment:
+    MYSQL_ROOT_PASSWORD: secretRootPassword
+    MYSQL_DATABASE: quiz
+    MYSQL_USER: quizUser
+    MYSQL_PASSWORD: quizSecretPassword
+  ports:
+    - "3306:3306"
