@@ -1,14 +1,19 @@
 package com.kpisar754.quizapp.entity;
 
+import com.kpisar754.quizapp.entity.enums.ProperAnswerIndex;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -22,9 +27,11 @@ import java.util.UUID;
 @Entity
 @Table(name = "question")
 @NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
 @ToString
+@Builder
 public class Question {
 
     @Id
@@ -39,14 +46,15 @@ public class Question {
     @ToString.Exclude
     private List<Answer> answers = new ArrayList<>();
 
+    @Enumerated(value = EnumType.STRING)
     @Column(name = "proper_answer", nullable = false)
-    private Character properAnswer;
+    private ProperAnswerIndex properAnswer;
 
     @ManyToMany(mappedBy = "questions")
     @ToString.Exclude
     private List<Quiz> quizzes;
 
-    public Question(UUID questionId, String questionContent, List<Answer> answers, Character properAnswer) {
+    public Question(UUID questionId, String questionContent, List<Answer> answers, ProperAnswerIndex properAnswer) {
         this.questionId = questionId;
         this.questionContent = questionContent;
         this.addAnswers(answers);
