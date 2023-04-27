@@ -8,6 +8,4 @@ import java.util.UUID;
 
 @Repository
 public interface QuestionRepository extends JpaRepository<Question, UUID> {
-
-    Question findByQuestionId(UUID id);
 }

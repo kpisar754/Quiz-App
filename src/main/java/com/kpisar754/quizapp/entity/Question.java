@@ -1,16 +1,13 @@
 package com.kpisar754.quizapp.entity;
 
-import com.kpisar754.quizapp.entity.enums.ProperAnswerIndex;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,7 +16,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -42,32 +38,16 @@ public class Question {
     @Column(name = "question_content", unique = true, nullable = false)
     private String questionContent;
 
-    @OneToMany(mappedBy = "question", cascade = CascadeType.ALL, orphanRemoval = true)
-    @ToString.Exclude
-    private List<Answer> answers = new ArrayList<>();
-
-    @Enumerated(value = EnumType.STRING)
-    @Column(name = "proper_answer", nullable = false)
-    private ProperAnswerIndex properAnswer;
+    @OneToOne(mappedBy = "question", cascade = CascadeType.ALL)
+    private Answer questionAnswer;
 
     @ManyToMany(mappedBy = "questions")
     @ToString.Exclude
     private List<Quiz> quizzes;
 
-    public Question(UUID questionId, String questionContent, List<Answer> answers, ProperAnswerIndex properAnswer) {
-        this.questionId = questionId;
+    public Question(String questionContent, Answer questionAnswer) {
         this.questionContent = questionContent;
-        this.addAnswers(answers);
-        this.properAnswer = properAnswer;
-    }
-
-    public void addAnswers(List<Answer> answers) {
-        answers.forEach(this::addAnswer);
-    }
-
-    public void addAnswer(Answer answer) {
-        answer.setQuestion(this);
-        this.answers.add(answer);
+        this.questionAnswer = questionAnswer;
     }
 
     @Override
@@ -75,11 +55,11 @@ public class Question {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Question question = (Question) o;
-        return Objects.equals(questionId, question.questionId) && Objects.equals(questionContent, question.questionContent) && Objects.equals(answers, question.answers) && Objects.equals(properAnswer, question.properAnswer) && Objects.equals(quizzes, question.quizzes);
+        return Objects.equals(questionId, question.questionId) && Objects.equals(questionContent, question.questionContent) && Objects.equals(questionAnswer, question.questionAnswer) && Objects.equals(quizzes, question.quizzes);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(questionId, questionContent, answers, properAnswer, quizzes);
+        return Objects.hash(questionId, questionContent, questionAnswer, quizzes);
     }
 }

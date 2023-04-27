@@ -1,10 +1,6 @@
 package com.kpisar754.quizapp.controller;
 
-import com.kpisar754.quizapp.dto.AnswerDto;
 import com.kpisar754.quizapp.dto.QuestionDto;
-import com.kpisar754.quizapp.entity.Answer;
-import com.kpisar754.quizapp.entity.Question;
-import com.kpisar754.quizapp.service.AnswerService;
 import com.kpisar754.quizapp.service.QuestionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -13,14 +9,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import java.util.LinkedList;
-import java.util.List;
-
 @Controller
 @RequiredArgsConstructor
 public class ApplicationController {
 
-    private final AnswerService answerService;
     private final QuestionService questionService;
 
     @GetMapping("/")
@@ -29,21 +21,27 @@ public class ApplicationController {
         return "/main";
     }
 
-    @GetMapping("/add")
-    public String getAddForm(Model model) {
-        model.addAttribute("question", new QuestionDto());
-        model.addAttribute("answer", new AnswerDto());
-        return "/add";
+    @GetMapping("/admin")
+    public String getAdminView(Model model) {
+        model.addAttribute("adminMessage", "Admin Panel");
+        return "/admin";
     }
 
-    @PostMapping
-    public String addQuestion(@ModelAttribute QuestionDto questionDto, AnswerDto answerDto) {
-        Answer answer = answerService.saveAnswer(answerDto);
-        List<Answer> answers = new LinkedList<>();
-        answers.add(answer);
-        Question question = questionService.saveQuestion(questionDto);
-        question.addAnswers(answers);
+    @GetMapping("/admin/add/question")
+    public String getAddQuestionForm(Model model) {
+        model.addAttribute("question", new QuestionDto());
+        return "addQuestion";
+    }
 
-        return "redirect:/main";
+    @PostMapping("/admin/add/question")
+    public String addQuestion(@ModelAttribute("question") QuestionDto questionDto) {
+        questionService.saveQuestion(questionDto);
+        return "redirect:/admin";
+    }
+
+    @GetMapping("/admin/see/allQuestions")
+    public String getAddAnswerForm(Model model) {
+        model.addAttribute("questions", questionService.findAllQuestions());
+        return "seeAllQuestions";
     }
 }

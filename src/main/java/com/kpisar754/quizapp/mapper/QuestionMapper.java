@@ -2,17 +2,18 @@ package com.kpisar754.quizapp.mapper;
 
 import com.kpisar754.quizapp.dto.QuestionDto;
 import com.kpisar754.quizapp.entity.Question;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class QuestionMapper {
 
     public Question fromDto(QuestionDto questionDto) {
         return Question.builder()
                 .questionId(questionDto.getId())
                 .questionContent(questionDto.getContent())
-                .answers(questionDto.getAnswers())
-                .properAnswer(questionDto.getProper())
+                .questionAnswer(questionDto.getAnswer())
                 .build();
     }
 
@@ -20,8 +21,7 @@ public class QuestionMapper {
         return QuestionDto.builder()
                 .id(question.getQuestionId())
                 .content(question.getQuestionContent())
-                .answers(question.getAnswers())
-                .proper(question.getProperAnswer())
+                .answer(question.getQuestionAnswer())
                 .build();
     }
 }
