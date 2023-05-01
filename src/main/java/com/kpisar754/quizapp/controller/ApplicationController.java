@@ -40,7 +40,7 @@ public class ApplicationController {
     }
 
     @GetMapping("/admin/see/allQuestions")
-    public String getAddAnswerForm(Model model) {
+    public String getAllQuestions(Model model) {
         model.addAttribute("questions", questionService.findAllQuestions());
         return "seeAllQuestions";
     }
