@@ -27,6 +27,12 @@ public class ApplicationController {
         return "/admin";
     }
 
+    @GetMapping("/quiz")
+    public String getQuizView(Model model) {
+        model.addAttribute("questions", questionService.provideRandomQuestionsForQuiz());
+        return "/quizApp";
+    }
+
     @GetMapping("/admin/add/question")
     public String getAddQuestionForm(Model model) {
         model.addAttribute("question", new QuestionDto());

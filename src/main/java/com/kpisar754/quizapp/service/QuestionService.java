@@ -8,7 +8,9 @@ import com.kpisar754.quizapp.repository.QuestionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.UUID;
 
 @Service
@@ -17,6 +19,7 @@ public class QuestionService {
 
     private final QuestionRepository questionRepository;
     private final QuestionMapper questionMapper;
+    private final Random generator;
 
     public void saveQuestion(QuestionDto questionDto) {
         Question question = new Question();
@@ -41,6 +44,23 @@ public class QuestionService {
                 .stream()
                 .map(questionMapper::toDto)
                 .toList();
+    }
+
+    public QuestionDto provideRandomQuestion() {
+        List<QuestionDto> allQuestionDto = findAllQuestions();
+        int index = generator.nextInt(allQuestionDto.size());
+        return allQuestionDto.get(index);
+    }
+
+    public List<QuestionDto> provideRandomQuestionsForQuiz() {
+        List<QuestionDto> quizQuestions = new ArrayList<>();
+        while (quizQuestions.size() < 3) {
+            QuestionDto randomQuestion = provideRandomQuestion();
+            if (!quizQuestions.contains(randomQuestion)) {
+                quizQuestions.add(randomQuestion);
+            }
+        }
+        return quizQuestions;
     }
 
     public void deleteById(UUID id) {
