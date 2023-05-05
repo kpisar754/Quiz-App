@@ -48,7 +48,7 @@ public class ApplicationController {
         int score = questionService.calculateQuizResult(quizQuestions, allAnswers);
         model.addAttribute("quizQuestions", quizQuestions);
         model.addAttribute("score", score);
-        return "/quizApp";
+        return "/quizResult";
     }
 
     @GetMapping("/admin/add/question")
