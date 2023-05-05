@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
 
@@ -61,6 +62,23 @@ public class QuestionService {
             }
         }
         return quizQuestions;
+    }
+
+    public int calculateQuizResult(List<QuestionDto> quizQuestions, Map<String, String> userAnswers) {
+        int score = 0;
+        for (QuestionDto question : quizQuestions) {
+            String userAnswer = userAnswers.get(question.getId().toString());
+            if (userAnswer != null && userAnswer.equals(question.getAnswer().getAnswerOptionOne()) && question.getAnswer().getIsOptionOneProper()) {
+                score++;
+            } else if (userAnswer != null && userAnswer.equals(question.getAnswer().getAnswerOptionTwo()) && question.getAnswer().getIsOptionTwoProper()) {
+                score++;
+            } else if (userAnswer != null && userAnswer.equals(question.getAnswer().getAnswerOptionThree()) && question.getAnswer().getIsOptionThreeProper()) {
+                score++;
+            } else if (userAnswer != null && userAnswer.equals(question.getAnswer().getAnswerOptionFour()) && question.getAnswer().getIsOptionFourProper()) {
+                score++;
+            }
+        }
+        return score;
     }
 
     public void deleteById(UUID id) {
