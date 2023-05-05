@@ -7,7 +7,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+
+import java.util.UUID;
 
 @Controller
 @RequiredArgsConstructor
@@ -49,5 +52,11 @@ public class ApplicationController {
     public String getAllQuestions(Model model) {
         model.addAttribute("questions", questionService.findAllQuestions());
         return "seeAllQuestions";
+    }
+
+    @GetMapping("/delete-question/{id}")
+    public String deleteQuestion(@PathVariable UUID id) {
+        questionService.deleteById(id);
+        return "redirect:/admin/see/allQuestions";
     }
 }

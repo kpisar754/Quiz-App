@@ -40,6 +40,11 @@
         <td th:text="${question.answer.isOptionThreeProper}"></td>
         <td th:text="${question.answer.answerOptionFour}"></td>
         <td th:text="${question.answer.isOptionFourProper}"></td>
+        <td>
+            <a th:href="@{/delete-question/{id}(id=${question.id})}" onclick="return confirm('Are you sure?')">
+            <span>DELETE</span>
+            </a>
+        </td>
     </tr>
     </tbody>
 </table>
