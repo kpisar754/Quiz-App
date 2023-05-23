@@ -5,5 +5,6 @@ public enum QuizResult {
     GENIUS,
     TOP_STUDENT,
     YOU_MADE_IT,
-    READ_A_LITTLE
+    READ_A_LITTLE,
+    NOT_CLASSIFIED
 }

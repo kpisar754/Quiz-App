@@ -1,6 +1,7 @@
 package com.kpisar754.quizapp.controller;
 
 import com.kpisar754.quizapp.dto.QuestionDto;
+import com.kpisar754.quizapp.dto.QuizDto;
 import com.kpisar754.quizapp.service.QuestionService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -37,17 +39,25 @@ public class ApplicationController {
     @GetMapping("/quiz")
     public String getQuizView(Model model, HttpSession session) {
         List<QuestionDto> quizQuestions = questionService.provideRandomQuestionsForQuiz();
+        QuizDto quiz = new QuizDto();
+        quiz.setQuestionDtoList(quizQuestions);
         session.setAttribute("quizSession", quizQuestions);
+        session.setAttribute("quizSession2", quiz);
         model.addAttribute("questions", quizQuestions);
+        model.addAttribute("quiz", quiz);
         return "/quizApp";
     }
 
     @PostMapping("/quiz")
     public String processQuizAnswers(@RequestParam Map<String, String> allAnswers, Model model, HttpSession session) {
         List<QuestionDto> quizQuestions = (List<QuestionDto>) session.getAttribute("quizSession");
+        QuizDto quiz = (QuizDto) session.getAttribute("quizSession2");
         int score = questionService.calculateQuizResult(quizQuestions, allAnswers);
+        LocalDateTime quizEnd = LocalDateTime.now();
+        quiz.setQuizEnd(quizEnd);
         model.addAttribute("quizQuestions", quizQuestions);
         model.addAttribute("score", score);
+        model.addAttribute("quiz", quiz);
         return "/quizResult";
     }
 

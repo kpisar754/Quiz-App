@@ -8,6 +8,34 @@
 <h1>Quiz Result</h1>
 <h2>Your score: <span th:text="${score}"></span>/3</h2>
 <br>
+<table>
+    <thread>
+    <tr>
+        <th>Quiz starts</th>
+        <th>Quiz ends</th>
+        <th>Your result (comment)</th>
+    </tr>
+    </thread>
+    <tbody>
+    <tr th:each="quizDto : ${quiz}">
+        <td th:text="${#temporals.format(quiz.quizStart,'dd-MM-yyyy HH:mm:ss')}" style="background-color: #e7e7e7"></td>
+        <td th:text="${#temporals.format(quiz.quizEnd,'dd-MM-yyyy HH:mm:ss')}" style="background-color: #d5e4ee"></td>
+        <td th:if="${score}==0">
+            <span th:value="${T(com.kpisar754.quizapp.entity.enums.QuizResult).READ_A_LITTLE}">READ A LITTLE BEFORE NEXT TRY</span>
+        </td>
+        <td th:if="${score}==1">
+            <span th:value="${T(com.kpisar754.quizapp.entity.enums.QuizResult).YOU_MADE_IT}">QUITE GOOD, YOU MADE IT</span>
+        </td>
+        <td th:if="${score}==2">
+            <span th:value="${T(com.kpisar754.quizapp.entity.enums.QuizResult).TOP_STUDENT}">VERY GOOD, TOP STUDENT</span>
+        </td>
+        <td th:if="${score}==3">
+            <span th:value="${T(com.kpisar754.quizapp.entity.enums.QuizResult).GENIUS}">YOU ARE A GENIUS</span>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<br>
 <a href="/">Go Back</a>
 </body>
 </html>
